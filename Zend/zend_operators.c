@@ -907,6 +907,25 @@ ZEND_API zend_string* ZEND_FASTCALL zval_try_get_string_func(zval *op) /* {{{ */
 }
 /* }}} */
 
+static int call_obj_operator_function(zval* result, zval* op1, zval *op2, const char *funcname)
+{
+	zend_fcall_info fci;
+	fci.size = sizeof(fci);
+	fci.object = Z_OBJ_P(op1);
+	fci.retval = result;
+	fci.param_count = 1;
+	fci.params = op2;
+	ZVAL_STRING(&fci.function_name, funcname);
+	int ret = zend_call_function(&fci, NULL);
+	if (ret == SUCCESS) {
+		return SUCCESS;
+	} else {
+		zend_error(E_NOTICE, "You have to implement the function %s in class %s to this operator with an object!",
+			funcname, ZSTR_VAL(Z_OBJCE_P(op1)->name));
+		return FAILURE;
+	}
+}
+
 static zend_never_inline void ZEND_FASTCALL add_function_array(zval *result, zval *op1, zval *op2) /* {{{ */
 {
 	if ((result == op1) && (result == op2)) {
@@ -988,6 +1007,10 @@ static zend_never_inline int ZEND_FASTCALL add_function_slow(zval *result, zval 
 
 ZEND_API int ZEND_FASTCALL add_function(zval *result, zval *op1, zval *op2) /* {{{ */
 {
+	if (Z_TYPE_P(op1) == IS_OBJECT && call_obj_operator_function(result, op1, op2, "__add") == SUCCESS) {
+		return SUCCESS;
+	}
+
 	if (add_function_fast(result, op1, op2) == SUCCESS) {
 		return SUCCESS;
 	} else {
@@ -1061,6 +1084,11 @@ static zend_never_inline int ZEND_FASTCALL sub_function_slow(zval *result, zval 
 
 ZEND_API int ZEND_FASTCALL sub_function(zval *result, zval *op1, zval *op2) /* {{{ */
 {
+	if (Z_TYPE_P(op1) == IS_OBJECT && call_obj_operator_function(result, op1, op2, "__sub") == SUCCESS) {
+		return SUCCESS;
+	}
+
+
 	if (sub_function_fast(result, op1, op2) == SUCCESS) {
 		return SUCCESS;
 	} else {
@@ -1071,6 +1099,11 @@ ZEND_API int ZEND_FASTCALL sub_function(zval *result, zval *op1, zval *op2) /* {
 
 ZEND_API int ZEND_FASTCALL mul_function(zval *result, zval *op1, zval *op2) /* {{{ */
 {
+	if (Z_TYPE_P(op1) == IS_OBJECT && call_obj_operator_function(result, op1, op2, "__mul") == SUCCESS) {
+		return SUCCESS;
+	}
+
+
 	zval op1_copy, op2_copy;
 	int converted = 0;
 
@@ -1132,6 +1165,10 @@ ZEND_API int ZEND_FASTCALL mul_function(zval *result, zval *op1, zval *op2) /* {
 
 ZEND_API int ZEND_FASTCALL pow_function(zval *result, zval *op1, zval *op2) /* {{{ */
 {
+	if (Z_TYPE_P(op1) == IS_OBJECT && call_obj_operator_function(result, op1, op2, "__pow") == SUCCESS) {
+		return SUCCESS;
+	}
+
 	zval op1_copy, op2_copy;
 	int converted = 0;
 
@@ -1237,6 +1274,10 @@ __attribute__((no_sanitize("float-divide-by-zero")))
 #endif
 ZEND_API int ZEND_FASTCALL div_function(zval *result, zval *op1, zval *op2) /* {{{ */
 {
+	if (Z_TYPE_P(op1) == IS_OBJECT && call_obj_operator_function(result, op1, op2, "__div") == SUCCESS) {
+		return SUCCESS;
+	}
+
 	zval op1_copy, op2_copy;
 	int converted = 0;
 
