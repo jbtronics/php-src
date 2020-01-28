@@ -923,11 +923,10 @@ static int call_obj_operator_function(zval* result, zval* op1, zval *op2, const 
 	ZVAL_STRING(&fci.function_name, funcname);
 	int ret = zend_call_function(&fci, NULL);
 
-	if (Z_ISUNDEF_P(result) || Z_ISNULL_P(result)) {
-		zend_error(E_RECOVERABLE_ERROR, "The %s function must return a non-null value!", funcname);
-	}
-
 	if (ret == SUCCESS) {
+		if (Z_ISUNDEF_P(result) || Z_ISNULL_P(result)) {
+			zend_error(E_RECOVERABLE_ERROR, "The %s function must return a non-null value!", funcname);
+		}
 		return SUCCESS;
 	} else {
 		zend_error(E_NOTICE, "You have to implement the function %s in class %s to this operator with an object!",
