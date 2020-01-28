@@ -6092,6 +6092,30 @@ void zend_begin_method_decl(zend_op_array *op_array, zend_string *name, zend_boo
 	} else if (zend_string_equals_literal(lcname, ZEND_DEBUGINFO_FUNC_NAME)) {
 		zend_check_magic_method_attr(fn_flags, "__debugInfo", 0);
 		ce->__debugInfo = (zend_function *) op_array;
+	} else if (zend_string_equals_literal(lcname, ZEND_ADD_FUNC_NAME)) {
+		zend_check_magic_method_attr(fn_flags, "__add", 1);
+	} else if (zend_string_equals_literal(lcname, ZEND_SUB_FUNC_NAME)) {
+		zend_check_magic_method_attr(fn_flags, "__sub", 1);
+	} else if (zend_string_equals_literal(lcname, ZEND_MUL_FUNC_NAME)) {
+		zend_check_magic_method_attr(fn_flags, "__mul", 1);
+	} else if (zend_string_equals_literal(lcname, ZEND_POW_FUNC_NAME)) {
+		zend_check_magic_method_attr(fn_flags, "__pow", 1);
+	} else if (zend_string_equals_literal(lcname, ZEND_DIV_FUNC_NAME)) {
+		zend_check_magic_method_attr(fn_flags, "__div", 1);
+	} else if (zend_string_equals_literal(lcname, ZEND_CONCAT_FUNC_NAME)) {
+		zend_check_magic_method_attr(fn_flags, "__concat", 1);
+	} else if (zend_string_equals_literal(lcname, ZEND_MOD_FUNC_NAME)) {
+		zend_check_magic_method_attr(fn_flags, "__mod", 1);
+	} else if (zend_string_equals_literal(lcname, ZEND_SHIFT_LEFT_FUNC_NAME)) {
+		zend_check_magic_method_attr(fn_flags, "__sl", 1);
+	} else if (zend_string_equals_literal(lcname, ZEND_SHIFT_RIGHT_FUNC_NAME)) {
+		zend_check_magic_method_attr(fn_flags, "__sr", 1);
+	} else if (zend_string_equals_literal(lcname, ZEND_OR_FUNC_NAME)) {
+		zend_check_magic_method_attr(fn_flags, "__or", 1);
+	} else if (zend_string_equals_literal(lcname, ZEND_AND_FUNC_NAME)) {
+		zend_check_magic_method_attr(fn_flags, "__and", 1);
+	} else if (zend_string_equals_literal(lcname, ZEND_XOR_FUNC_NAME)) {
+		zend_check_magic_method_attr(fn_flags, "__xor", 1);
 	}
 
 	zend_string_release_ex(lcname, 0);
