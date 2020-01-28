@@ -1054,6 +1054,7 @@ END_EXTERN_C()
 #define ZEND_OR_FUNC_NAME			"__or"
 #define ZEND_AND_FUNC_NAME			"__and"
 #define ZEND_XOR_FUNC_NAME			"__xor"
+#define ZEND_COMPARE_FUNC_NAME		"__compare"
 
 
 /* The following constants may be combined in CG(compiler_options)

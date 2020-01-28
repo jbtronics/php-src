@@ -924,7 +924,7 @@ static int call_obj_operator_function(zval* result, zval* op1, zval *op2, const 
 	int ret = zend_call_function(&fci, NULL);
 
 	if (Z_ISUNDEF_P(result) || Z_ISNULL_P(result)) {
-		zend_error(E_ERROR, "The %s function must return a non-null value!", funcname);
+		zend_error(E_RECOVERABLE_ERROR, "The %s function must return a non-null value!", funcname);
 	}
 
 	if (ret == SUCCESS) {
@@ -2065,6 +2065,22 @@ ZEND_API int ZEND_FASTCALL zend_compare(zval *op1, zval *op2) /* {{{ */
 {
 	int converted = 0;
 	zval op1_copy, op2_copy;
+
+	zval result;
+	if ((Z_TYPE_P(op1) == IS_OBJECT && call_obj_operator_function(&result, op1, op2, "__compare", 0) == SUCCESS)
+		|| (Z_TYPE_P(op2) == IS_OBJECT && call_obj_operator_function(&result, op1, op2, "__compare", 1) == SUCCESS)) {
+
+		if (Z_TYPE(result) != IS_LONG) {
+			zend_error(E_RECOVERABLE_ERROR, "__compare must return an int value!");
+		}
+		if (Z_LVAL(result) > 0) {
+			return 1;
+		} else if (Z_LVAL(result) < 0) {
+			return -1;
+		} else {
+			return 0;
+		}
+	}
 
 	while (1) {
 		switch (TYPE_PAIR(Z_TYPE_P(op1), Z_TYPE_P(op2))) {
