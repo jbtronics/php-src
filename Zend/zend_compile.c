@@ -6128,9 +6128,6 @@ void zend_begin_method_decl(zend_op_array *op_array, zend_string *name, zend_boo
 	} else if (zend_string_equals_literal(lcname, ZEND_XOR_FUNC_NAME)) {
 		zend_check_magic_method_attr(fn_flags, "__xor", 1);
 		ce->__xor = (zend_function *) op_array;
-	} else if (zend_string_equals_literal(lcname, ZEND_COMPARE_FUNC_NAME)) {
-		zend_check_magic_method_attr(fn_flags, "__compare", 1);
-		ce->__compare = (zend_function *) op_array;
 	}
 
 	zend_string_release_ex(lcname, 0);
