@@ -1016,11 +1016,6 @@ static zend_never_inline int ZEND_FASTCALL add_function_slow(zval *result, zval 
 
 ZEND_API int ZEND_FASTCALL add_function(zval *result, zval *op1, zval *op2) /* {{{ */
 {
-	if ((Z_TYPE_P(op1) == IS_OBJECT && call_obj_operator_function(result, op1, op2, "__add", 0) == SUCCESS)
-		|| (Z_TYPE_P(op2) == IS_OBJECT && call_obj_operator_function(result, op1, op2, "__add", 1) == SUCCESS)) {
-		return SUCCESS;
-	}
-
 	if (add_function_fast(result, op1, op2) == SUCCESS) {
 		return SUCCESS;
 	} else {
@@ -1094,12 +1089,6 @@ static zend_never_inline int ZEND_FASTCALL sub_function_slow(zval *result, zval 
 
 ZEND_API int ZEND_FASTCALL sub_function(zval *result, zval *op1, zval *op2) /* {{{ */
 {
-	if ((Z_TYPE_P(op1) == IS_OBJECT && call_obj_operator_function(result, op1, op2, "__sub", 0) == SUCCESS)
-		|| (Z_TYPE_P(op2) == IS_OBJECT && call_obj_operator_function(result, op1, op2, "__sub", 1) == SUCCESS)) {
-		return SUCCESS;
-	}
-
-
 	if (sub_function_fast(result, op1, op2) == SUCCESS) {
 		return SUCCESS;
 	} else {
@@ -1110,12 +1099,6 @@ ZEND_API int ZEND_FASTCALL sub_function(zval *result, zval *op1, zval *op2) /* {
 
 ZEND_API int ZEND_FASTCALL mul_function(zval *result, zval *op1, zval *op2) /* {{{ */
 {
-	if ((Z_TYPE_P(op1) == IS_OBJECT && call_obj_operator_function(result, op1, op2, "__mul", 0) == SUCCESS)
-		|| (Z_TYPE_P(op2) == IS_OBJECT && call_obj_operator_function(result, op1, op2, "__mul", 1) == SUCCESS)) {
-		return SUCCESS;
-	}
-
-
 	zval op1_copy, op2_copy;
 	int converted = 0;
 
@@ -1177,11 +1160,6 @@ ZEND_API int ZEND_FASTCALL mul_function(zval *result, zval *op1, zval *op2) /* {
 
 ZEND_API int ZEND_FASTCALL pow_function(zval *result, zval *op1, zval *op2) /* {{{ */
 {
-	if ((Z_TYPE_P(op1) == IS_OBJECT && call_obj_operator_function(result, op1, op2, "__pow", 0) == SUCCESS)
-		|| (Z_TYPE_P(op2) == IS_OBJECT && call_obj_operator_function(result, op1, op2, "__pow", 1) == SUCCESS)) {
-		return SUCCESS;
-	}
-
 	zval op1_copy, op2_copy;
 	int converted = 0;
 
@@ -1287,11 +1265,6 @@ __attribute__((no_sanitize("float-divide-by-zero")))
 #endif
 ZEND_API int ZEND_FASTCALL div_function(zval *result, zval *op1, zval *op2) /* {{{ */
 {
-	if ((Z_TYPE_P(op1) == IS_OBJECT && call_obj_operator_function(result, op1, op2, "__div", 0) == SUCCESS)
-		|| (Z_TYPE_P(op2) == IS_OBJECT && call_obj_operator_function(result, op1, op2, "__div", 1) == SUCCESS)) {
-		return SUCCESS;
-	}
-
 	zval op1_copy, op2_copy;
 	int converted = 0;
 
@@ -1372,12 +1345,6 @@ ZEND_API int ZEND_FASTCALL div_function(zval *result, zval *op1, zval *op2) /* {
 
 ZEND_API int ZEND_FASTCALL mod_function(zval *result, zval *op1, zval *op2) /* {{{ */
 {
-
-	if ((Z_TYPE_P(op1) == IS_OBJECT && call_obj_operator_function(result, op1, op2, "__mod", 0) == SUCCESS)
-		|| (Z_TYPE_P(op2) == IS_OBJECT && call_obj_operator_function(result, op1, op2, "__mod", 1) == SUCCESS)) {
-		return SUCCESS;
-	}
-
 	zend_long op1_lval, op2_lval;
 
 	convert_op1_op2_long(op1, op1_lval, op2, op2_lval, result, ZEND_MOD, mod_function);
@@ -1527,11 +1494,6 @@ try_again:
 
 ZEND_API int ZEND_FASTCALL bitwise_or_function(zval *result, zval *op1, zval *op2) /* {{{ */
 {
-	if ((Z_TYPE_P(op1) == IS_OBJECT && call_obj_operator_function(result, op1, op2, "__or", 0) == SUCCESS)
-		|| (Z_TYPE_P(op2) == IS_OBJECT && call_obj_operator_function(result, op1, op2, "__or", 1) == SUCCESS)) {
-		return SUCCESS;
-	}
-
 	zend_long op1_lval, op2_lval;
 
 	if (EXPECTED(Z_TYPE_P(op1) == IS_LONG) && EXPECTED(Z_TYPE_P(op2) == IS_LONG)) {
@@ -1610,11 +1572,6 @@ ZEND_API int ZEND_FASTCALL bitwise_or_function(zval *result, zval *op1, zval *op
 
 ZEND_API int ZEND_FASTCALL bitwise_and_function(zval *result, zval *op1, zval *op2) /* {{{ */
 {
-	if ((Z_TYPE_P(op1) == IS_OBJECT && call_obj_operator_function(result, op1, op2, "__and", 0) == SUCCESS)
-		|| (Z_TYPE_P(op2) == IS_OBJECT && call_obj_operator_function(result, op1, op2, "__and", 1) == SUCCESS)) {
-		return SUCCESS;
-	}
-
 	zend_long op1_lval, op2_lval;
 
 	if (EXPECTED(Z_TYPE_P(op1) == IS_LONG) && EXPECTED(Z_TYPE_P(op2) == IS_LONG)) {
@@ -1693,11 +1650,6 @@ ZEND_API int ZEND_FASTCALL bitwise_and_function(zval *result, zval *op1, zval *o
 
 ZEND_API int ZEND_FASTCALL bitwise_xor_function(zval *result, zval *op1, zval *op2) /* {{{ */
 {
-	if ((Z_TYPE_P(op1) == IS_OBJECT && call_obj_operator_function(result, op1, op2, "__xor", 0) == SUCCESS)
-		|| (Z_TYPE_P(op2) == IS_OBJECT && call_obj_operator_function(result, op1, op2, "__xor", 1) == SUCCESS)) {
-		return SUCCESS;
-	}
-
 	zend_long op1_lval, op2_lval;
 
 	if (EXPECTED(Z_TYPE_P(op1) == IS_LONG) && EXPECTED(Z_TYPE_P(op2) == IS_LONG)) {
@@ -1776,11 +1728,6 @@ ZEND_API int ZEND_FASTCALL bitwise_xor_function(zval *result, zval *op1, zval *o
 
 ZEND_API int ZEND_FASTCALL shift_left_function(zval *result, zval *op1, zval *op2) /* {{{ */
 {
-	if ((Z_TYPE_P(op1) == IS_OBJECT && call_obj_operator_function(result, op1, op2, "__sl", 0) == SUCCESS)
-		|| (Z_TYPE_P(op2) == IS_OBJECT && call_obj_operator_function(result, op1, op2, "__sl", 1) == SUCCESS)) {
-		return SUCCESS;
-	}
-
 	zend_long op1_lval, op2_lval;
 
 	convert_op1_op2_long(op1, op1_lval, op2, op2_lval, result, ZEND_SL, shift_left_function);
@@ -1818,11 +1765,6 @@ ZEND_API int ZEND_FASTCALL shift_left_function(zval *result, zval *op1, zval *op
 
 ZEND_API int ZEND_FASTCALL shift_right_function(zval *result, zval *op1, zval *op2) /* {{{ */
 {
-	if ((Z_TYPE_P(op1) == IS_OBJECT && call_obj_operator_function(result, op1, op2, "__sr", 0) == SUCCESS)
-		|| (Z_TYPE_P(op2) == IS_OBJECT && call_obj_operator_function(result, op1, op2, "__sr", 1) == SUCCESS)) {
-		return SUCCESS;
-	}
-
 	zend_long op1_lval, op2_lval;
 
 	convert_op1_op2_long(op1, op1_lval, op2, op2_lval, result, ZEND_SR, shift_right_function);
@@ -1859,11 +1801,6 @@ ZEND_API int ZEND_FASTCALL shift_right_function(zval *result, zval *op1, zval *o
 
 ZEND_API int ZEND_FASTCALL concat_function(zval *result, zval *op1, zval *op2) /* {{{ */
 {
-	if ((Z_TYPE_P(op1) == IS_OBJECT && call_obj_operator_function(result, op1, op2, "__concat", 0) == SUCCESS)
-		|| (Z_TYPE_P(op2) == IS_OBJECT && call_obj_operator_function(result, op1, op2, "__concat", 1) == SUCCESS)) {
-		return SUCCESS;
-	}
-
     zval *orig_op1 = op1;
 	zval op1_copy, op2_copy;
 
