@@ -272,6 +272,7 @@ static int zend_std_call_op_handler(zend_uchar opcode, zval *result, zval *op1, 
 			if(zobj == Z_OBJ_P(op1) && Z_TYPE_P(op2) == IS_OBJECT) {
 				zobj = Z_OBJ_P(op2);
 				ce = Z_OBJCE_P(op2);
+				zval_ptr_dtor(&fci.function_name);
 				/* Retry checking if other operand has method */
 				continue;
 			}
