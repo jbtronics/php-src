@@ -534,6 +534,7 @@ struct _zend_ast_ref {
 #define IS_ITERABLE					13
 #define IS_VOID						14
 #define IS_STATIC					15
+#define IS_CLASS_NAME				18
 
 /* internal types */
 #define IS_INDIRECT             	12

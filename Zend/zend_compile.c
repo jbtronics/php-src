@@ -172,6 +172,7 @@ static const struct reserved_class_name reserved_class_names[] = {
 	{ZEND_STRL("void")},
 	{ZEND_STRL("iterable")},
 	{ZEND_STRL("object")},
+	{ZEND_STRL("class")},
 	{NULL, 0}
 };
 
@@ -1244,6 +1245,9 @@ zend_string *zend_type_to_string_resolved(zend_type type, zend_class_entry *scop
 	}
 	if (type_mask & MAY_BE_VOID) {
 		str = add_type_string(str, ZSTR_KNOWN(ZEND_STR_VOID));
+	}
+	if (type_mask & MAY_BE_CLASS_NAME) {
+		str = add_type_string(str, ZSTR_KNOWN(ZEND_STR_CLASS));
 	}
 
 	if (type_mask & MAY_BE_NULL) {

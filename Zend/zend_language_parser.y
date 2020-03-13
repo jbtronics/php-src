@@ -686,6 +686,7 @@ type_expr_without_static:
 type_without_static:
 		T_ARRAY		{ $$ = zend_ast_create_ex(ZEND_AST_TYPE, IS_ARRAY); }
 	|	T_CALLABLE	{ $$ = zend_ast_create_ex(ZEND_AST_TYPE, IS_CALLABLE); }
+	|   T_CLASS     { $$ = zend_ast_create_ex(ZEND_AST_TYPE, IS_CLASS_NAME); }
 	|	name		{ $$ = $1; }
 ;
 

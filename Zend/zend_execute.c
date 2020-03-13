@@ -966,6 +966,14 @@ ZEND_API zend_bool zend_value_instanceof_static(zval *zv) {
 	return instanceof_function(Z_OBJCE_P(zv), called_scope);
 }
 
+ZEND_API zend_bool zend_value_is_class(zval *zv)
+{
+	if (Z_TYPE_P(zv) != IS_STRING) {
+		return 0;
+	}
+	return zend_lookup_class(Z_STR_P(zv)) != NULL;
+}
+
 
 static zend_always_inline zend_bool zend_check_type_slow(
 		zend_type type, zval *arg, zend_reference *ref, void **cache_slot, zend_class_entry *scope,
@@ -1018,6 +1026,9 @@ builtin_types:
 		return 1;
 	}
 	if ((type_mask & MAY_BE_STATIC) && zend_value_instanceof_static(arg)) {
+		return 1;
+	}
+	if ((type_mask & MAY_BE_CLASS_NAME) && zend_value_is_class(arg)) {
 		return 1;
 	}
 	if (ref && ZEND_REF_HAS_TYPE_SOURCES(ref)) {

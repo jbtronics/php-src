@@ -41,6 +41,7 @@
 #define MAY_BE_ITERABLE             (1 << IS_ITERABLE)
 #define MAY_BE_VOID                 (1 << IS_VOID)
 #define MAY_BE_STATIC               (1 << IS_STATIC)
+#define MAY_BE_CLASS_NAME           (1 << IS_CLASS_NAME)
 
 #define MAY_BE_ARRAY_SHIFT          (IS_REFERENCE)
 
